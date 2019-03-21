@@ -1,0 +1,126 @@
+apply plugin: 'com.android.application'
+
+android {
+
+//    signingConfigs {
+//        release {
+//            keyAlias KEY_ALIATS
+//            keyPassword KEY_PASSWORD
+//            storeFile file(KEY_STORE)
+//            storePassword KEY_PASSWORD
+//            v2SigningEnabled false
+//        }
+//
+//        debug {
+//            keyAlias KEY_ALIATS
+//            keyPassword KEY_PASSWORD
+//            storeFile file(KEY_STORE)
+//            storePassword KEY_PASSWORD
+//            v2SigningEnabled false
+//        }
+//    }
+
+
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    compileOptions {
+        sourceCompatibility rootProject.ext.sourceCompatibility
+        targetCompatibility rootProject.ext.sourceCompatibility
+    }
+    defaultConfig {
+        applicationId "com.netofthing"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
+        multiDexEnabled true
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+        }
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            buildConfigField "boolean", "isLog", "true"
+            buildConfigField "boolean", "isEditUrl", "true"
+            buildConfigField "boolean", "isSSL", "false"
+            //这里配置string资源，使用@string可以在manifest等文件中引用
+//        resValue "string", "app_key", "${APP_KEY}"
+//        resValue "string", "app_secret", "${APP_SECRET}"
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //shrinkResources true
+            buildConfigField "boolean", "isLog", "false"
+            buildConfigField "boolean", "isEditUrl", "false"
+            buildConfigField "boolean", "isSSL", "true"
+            //这里配置string资源，使用@string可以在manifest等文件中引用
+//        resValue "string", "app_key", "${APP_KEY}"
+//        resValue "string", "app_secret", "${APP_SECRET}"
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+    sourceSets {
+
+        main {
+
+            res.srcDirs = [
+                    'src/main/res',
+                    'src/main/res/layout/cardItem'
+            ]
+
+            assets.srcDirs = ['src/main/assets']
+
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+
+            jni.srcDirs = []
+
+            jniLibs.srcDirs = ['src/main/libs']
+
+        }
+    }
+    repositories { flatDir { dirs 'libs' } }
+    dataBinding {
+        enabled true
+    }
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+    }
+    productFlavors {
+    }
+    lintOptions {
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    implementation ("com.android.support:appcompat-v7:${rootProject.ext.android.VSupportSdk}"){
+        exclude module: 'support-v4'
+    }
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+    //框架
+    implementation project(':mybaselibrary')
+    //轮播图
+    implementation 'com.youth.banner:banner:1.4.10'
+    //图表
+    implementation 'com.github.PhilJay:MPAndroidChart:v2.2.5'
+
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+}

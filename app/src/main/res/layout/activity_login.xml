@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/splash"
+              android:gravity="center"
+              android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/lin_root"
+        android:layout_width="800px"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_white_radiu_t10"
+        android:paddingTop="70px"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+            android:layout_marginLeft="50px"
+            android:layout_marginRight="50px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.fivefivelike.mybaselibrary.view.LineTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="用户名"
+                android:textColor="@color/color_333333"
+                android:textSize="50px"
+                app:cnNum="3"
+                app:endText=":"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30px"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="left|center_vertical"
+                android:inputType="phone"
+                android:text=""
+                android:textColor="@color/color_333333"
+                android:textSize="45px"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/trans_2px"
+            android:layout_marginLeft="50px"
+            android:layout_marginRight="50px"
+            android:background="@color/base_mask"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+            android:layout_marginLeft="50px"
+            android:layout_marginRight="50px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.fivefivelike.mybaselibrary.view.LineTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="密码"
+                android:textColor="@color/color_333333"
+                android:textSize="50px"
+                app:cnNum="3"
+                app:endText=":"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30px"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="left|center_vertical"
+                android:inputType="textPassword"
+                android:text=""
+                android:textColor="@color/color_333333"
+                android:textSize="45px"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/trans_2px"
+            android:layout_marginLeft="50px"
+            android:layout_marginRight="50px"
+            android:background="@color/base_mask"/>
+
+        <com.fivefivelike.mybaselibrary.view.RoundButton
+            android:id="@+id/tv_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30px"
+            android:gravity="center"
+            android:padding="25px"
+            android:text="登录"
+            android:textColor="@color/color_Primary"
+            android:textSize="60px"
+            app:btnCornerRadius="10px"
+            app:btnSolidColor="@color/color_blue"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
