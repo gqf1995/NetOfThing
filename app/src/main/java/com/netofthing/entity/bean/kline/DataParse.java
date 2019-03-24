@@ -115,18 +115,19 @@ public class DataParse {
     private String getDateTime(long time, String klineType) {
         time = time * 1000;
         String data = klineType;
-        if (klineType.contains("1m") || klineType.contains("3m") || (klineType.contains("5m") && !klineType.contains("15m")) || klineType.contains("10m")) {
-            //17:33
-            data = TimeUtils.millis2String(time, new SimpleDateFormat("HH:mm"));
-        } else if (klineType.contains("15m") || klineType.contains("30m") || klineType.contains("1h")) {
-            //07/12 12:03
-            data = TimeUtils.millis2String(time, new SimpleDateFormat("MM/dd HH:mm"));
-        } else if (klineType.contains("1d") || klineType.contains("1w")) {
-            //2018/04/12
-            data = TimeUtils.millis2String(time, new SimpleDateFormat("yyyy/MM/dd"));
-        } else {
-            data = TimeUtils.millis2String(time, simpleDateFormat);
-        }
+        data = TimeUtils.millis2String(time, new SimpleDateFormat("MM/dd"));
+//        if (klineType.contains("1m") || klineType.contains("3m") || (klineType.contains("5m") && !klineType.contains("15m")) || klineType.contains("10m")) {
+//            //17:33
+//            data = TimeUtils.millis2String(time, new SimpleDateFormat("HH:mm"));
+//        } else if (klineType.contains("15m") || klineType.contains("30m") || klineType.contains("1h")) {
+//            //07/12 12:03
+//            data = TimeUtils.millis2String(time, new SimpleDateFormat("MM/dd HH:mm"));
+//        } else if (klineType.contains("1d") || klineType.contains("1w")) {
+//            //2018/04/12
+//            data = TimeUtils.millis2String(time, new SimpleDateFormat("yyyy/MM/dd"));
+//        } else {
+//            data = TimeUtils.millis2String(time, simpleDateFormat);
+//        }
         return data;
     }
 
@@ -247,7 +248,7 @@ public class DataParse {
             for (int i = 0; i < count; i++) {
                 KLineBean kLineBean = kLineBeans.get(i);
                 if (TextUtils.isEmpty(kLineBean.date)) {
-                    kLineBean.date = getDateTime(kLineBean.timestamp, "1m");                    //kLineBeans.get(i).setNewDate(TimeUtils.string2Date(kLineBeans.get(i).date));
+                    kLineBean.date = getDateTime(kLineBean.timestamp, "15m");                    //kLineBeans.get(i).setNewDate(TimeUtils.string2Date(kLineBeans.get(i).date));
                 }
                 list.add(kLineBean);
             }
@@ -291,7 +292,7 @@ public class DataParse {
             for (int i = 0; i < count; i++) {
                 KLineBean kLineBean = kLineBeans.get(i);
                 if (TextUtils.isEmpty(kLineBean.date)) {
-                    kLineBean.date = getDateTime(kLineBean.timestamp, "1m");
+                    kLineBean.date = getDateTime(kLineBean.timestamp, "15m");
                 }
                 kDatas.add(kLineBean);
             }

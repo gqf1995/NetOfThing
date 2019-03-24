@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.fivefivelike.mybaselibrary.base.BaseDataBindActivity;
 import com.netofthing.mvp.databinder.LoginBinder;
 import com.netofthing.mvp.delegate.LoginDelegate;
@@ -29,11 +30,11 @@ public class LoginActivity extends BaseDataBindActivity<LoginDelegate, LoginBind
         viewDelegate.viewHolder.tv_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(viewDelegate.getActivity(), KlineInfoActivity.class));
+                startActivity(new Intent(viewDelegate.getActivity(), ThingListActivity.class));
                 finish();
             }
         });
-
+        ActivityUtils.finishActivity(MainActivity.class);
     }
 
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<string name="ic_Back">&#xe643;</string>-->
+    <!--<string name="ic_shuaxin">&#xe66d;</string>-->
+    <!--<string name="ic_jinggao">&#xe620;</string>-->
+
+
+    <string name="ic_seting">&#xe63b;</string>
+    <string name="ic_seting1">&#xe63a;</string>
+    <string name="ic_tixing">&#xe639;</string>
+    <string name="ic_Down">&#xe64d;</string>
+    <string name="ic_Dots1">&#xe648;</string>
+    <string name="ic_Next">&#xe652;</string>
+    <string name="ic_kong">&#xe6e2;</string>
+    <string name="ic_duo">&#xe6e1;</string>
+    <string name="ic_die">&#xe6e0;</string>
+    <string name="ic_zhang">&#xe6df;</string>
+    <string name="ic_fenxiang">&#xe60d;</string>
+
+
+</resources>

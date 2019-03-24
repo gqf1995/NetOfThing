@@ -6,6 +6,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.fivefivelike.mybaselibrary.R;
+import com.fivefivelike.mybaselibrary.utils.CommonUtils;
+
 import java.util.List;
 
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -75,6 +78,7 @@ public class SwipeRefreshLayout extends PtrFrameLayout implements PtrHandler {
         mPtrClassicHeader = new PtrDefaultHeader(getContext());
         setHeaderView(mPtrClassicHeader);
         addPtrUIHandler(mPtrClassicHeader);
+        setBackgroundColor(CommonUtils.getColor(R.color.base_mask_less));
     }
 
     boolean isRefreshNoEvent = false;
@@ -104,10 +108,13 @@ public class SwipeRefreshLayout extends PtrFrameLayout implements PtrHandler {
             }
         } else {
             //结束刷新
-            if (isRefreshing()) {
-                isRefreshNoEvent = false;
-                refreshComplete();
-            }
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    isRefreshNoEvent = false;
+                    refreshComplete();
+                }
+            }, 50);
         }
     }
 
@@ -132,8 +139,13 @@ public class SwipeRefreshLayout extends PtrFrameLayout implements PtrHandler {
     }
 
     public boolean dispatchTouchEvent(MotionEvent e) {
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                return super.dispatchTouchEvent(e);
+        }
         if (recyclerView != null) {
-            if (!recyclerView.canScrollVertically(-1)) {
+            if (!recyclerView.canScrollVertically(-1) && !isRefreshing()) {
                 return super.dispatchTouchEvent(e);
             } else {
                 return super.dispatchTouchEventSupper(e);

@@ -185,7 +185,7 @@ public class BlzKlineDraw {
                 mChartKline.setMyBMarkerView(new MyBottomMarkerView(mContext, R.layout.mymarkerview));
                 if (selectType == 0) {
                     lineDataSetMA1.setDrawFilled(false);
-                    mChartKline.getXAxis().setDrawLabels(false);
+                    mChartKline.getXAxis().setDrawLabels(true);
                     mChartKline.setExtraOffsets(0f, 0f, 0f, 0f);
                     mChartKline.setMyBMarkerView(null);
                 }
@@ -196,7 +196,7 @@ public class BlzKlineDraw {
                 lineDataSetMA5.setVisible(true);
                 lineDataSetMA10.setVisible(true);
                 lineDataSetMA20.setVisible(true);
-                mChartKline.getXAxis().setDrawLabels(false);
+                mChartKline.getXAxis().setDrawLabels(true);
                 mChartKline.setExtraOffsets(0f, 0f, 0f, 0f);
                 mChartKline.setMyBMarkerView(null);
             }
@@ -670,7 +670,7 @@ public class BlzKlineDraw {
         //bar x y轴
         xAxisKline = mChartKline.getXAxis();
         xAxisKline.setEnabled(true);
-        xAxisKline.setDrawLabels(false); //是否显示X坐标轴上的刻度，默认是true
+        xAxisKline.setDrawLabels(true); //是否显示X坐标轴上的刻度，默认是true
         xAxisKline.setDrawGridLines(false);//是否显示X坐标轴上的刻度竖线，默认是true
         xAxisKline.setDrawAxisLine(true); //是否绘制坐标轴的线，即含有坐标的那条线，默认是true
         xAxisKline.setGridColor(border_color);
@@ -680,8 +680,7 @@ public class BlzKlineDraw {
         xAxisKline.setTextColor(color_font4);//设置字的颜色
         xAxisKline.setPosition(XAxis.XAxisPosition.BOTTOM);//设置值显示在什么位置
         xAxisKline.setAvoidFirstLastClipping(true);//设置首尾的值是否自动调整，避免被遮挡
-        xAxisKline.setLabelsToSkip(30);
-
+        xAxisKline.setLabelsToSkip(7);
 
         axisLeftKline = mChartKline.getAxisRight();
         axisLeftKline.setEnabled(true);
@@ -839,7 +838,7 @@ public class BlzKlineDraw {
         set.setHighLightColor(color_999999);
         set.setDrawValues(true);
         set.setValueTextColor(color_font2);
-        set.setVisible(false);
+        set.setVisible(true);
 
         List<String> times = new ArrayList<>();
         times.addAll(mData.getXVals());

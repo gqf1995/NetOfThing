@@ -8,7 +8,7 @@ public class AppConst {
 
     //http://47.98.56.206:1913/symbol/info?name=testCoin.
 
-    public static final String app2BaseUrl = "https://blz.bicoin.com.cn";
+    public static final String app2BaseUrl = "http://47.101.57.230:8080";
 
     public static final boolean isLog = true;
 

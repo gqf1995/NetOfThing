@@ -78,7 +78,16 @@
         <activity
             android:name=".mvp.activity.ThingListActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".mvp.activity.MachineListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".mvp.activity.ComponentesListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

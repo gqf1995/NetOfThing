@@ -30,7 +30,7 @@ public class ResultDialog {
 
     public static final int CANNEL_POSITION = 0;
     public static final int CONFIRM_POSITION = 1;
-    public static final String DIALOG_KEY = "dialog";
+    public static final String DIALOG_KEY = "msg";
 
     Context context;
 
@@ -56,6 +56,8 @@ public class ResultDialog {
             } else if ("2".equals(resultDialogEntity.getType())) {
                 ToastUtil.show(TextUtils.isEmpty(resultDialogEntity.getTitle()) ?
                         resultDialogEntity.getContent() : resultDialogEntity.getTitle());
+            } else {
+                return null;
             }
             return resultDialogEntity;
         }
