@@ -39,6 +39,8 @@ import com.netofthing.entity.bean.kline.KLineBean;
 import com.netofthing.utils.BigUIUtil;
 import com.netofthing.utils.UserSet;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +67,6 @@ public class BlzKlineDraw {
     public static final int pageSize = 300;
 
     Context mContext;
-
 
 
     int getRiseColor;
@@ -125,7 +126,6 @@ public class BlzKlineDraw {
 
         setChartListener();
     }
-
 
 
     ValueAnimator animator;
@@ -270,66 +270,66 @@ public class BlzKlineDraw {
         mChartVolume.moveViewToX(mData.getXVals().size() - 1);
 
     }
-//
-//    public void setData(Context context, DataParse data, KCombinedChart chartKline, KCombinedChart chartVolume) {
-//        Log.i("KlineDraw", "setData");
-//
-//        mData = data;
-//        mContext = context;
-//        mChartKline = chartKline;
-//        mChartVolume = chartVolume;
-//
-//        setKLineDatas();
-//
-//        Log.i("KlineDraw", "data_ok");
-//
-//
-//        initChartKline();
-//        setKLineByChart(mChartKline);
-//        mChartKline.setAutoScaleMinMaxEnabled(true);
-//        Log.i("KlineDraw", "kline_ok");
-//
-//
-//        initChartVolume();
-//        setVolumeByChart(mChartVolume);
-//        mChartVolume.setAutoScaleMinMaxEnabled(true);
-//        Log.i("KlineDraw", "volume_ok");
-//
-//        setOffset();
-//
-//        mChartKline.moveViewToX(kLineDatas.size() - 1);
-//        mChartVolume.moveViewToX(kLineDatas.size() - 1);
-//        //        mChartKline.setDefaultClickLinsener(new DefaultClickLinsener() {
-//        //            @Override
-//        //            public void onClick(View view, int position, Object item) {
-//        //                if (onClick != null) {
-//        //                    onClick.click(position, (int) mChartKline.getXChartMin(), (int) mChartKline.getXChartMax());
-//        //                }
-//        //            }
-//        //        });
-//        //        mChartVolume.setDefaultClickLinsener(new DefaultClickLinsener() {
-//        //            @Override
-//        //            public void onClick(View view, int position, Object item) {
-//        //                if (onClick != null) {
-//        //                    onClick.click(position, (int) mChartVolume.getXChartMin(), (int) mChartVolume.getXChartMax());
-//        //                }
-//        //            }
-//        //        });
-//        setMarkerView(mData, chartKline);
-//        setMarkerViewButtom(mData, chartVolume);
-//        setChartListener();
-//
-//
-//        setHandler(mChartKline);
-//        setHandler(mChartVolume);
-//
-//        mChartKline.notifyDataSetChanged();
-//        mChartVolume.notifyDataSetChanged();
-//
-//        mChartKline.invalidate();
-//        mChartVolume.invalidate();
-//
-//    }
+    //
+    //    public void setData(Context context, DataParse data, KCombinedChart chartKline, KCombinedChart chartVolume) {
+    //        Log.i("KlineDraw", "setData");
+    //
+    //        mData = data;
+    //        mContext = context;
+    //        mChartKline = chartKline;
+    //        mChartVolume = chartVolume;
+    //
+    //        setKLineDatas();
+    //
+    //        Log.i("KlineDraw", "data_ok");
+    //
+    //
+    //        initChartKline();
+    //        setKLineByChart(mChartKline);
+    //        mChartKline.setAutoScaleMinMaxEnabled(true);
+    //        Log.i("KlineDraw", "kline_ok");
+    //
+    //
+    //        initChartVolume();
+    //        setVolumeByChart(mChartVolume);
+    //        mChartVolume.setAutoScaleMinMaxEnabled(true);
+    //        Log.i("KlineDraw", "volume_ok");
+    //
+    //        setOffset();
+    //
+    //        mChartKline.moveViewToX(kLineDatas.size() - 1);
+    //        mChartVolume.moveViewToX(kLineDatas.size() - 1);
+    //        //        mChartKline.setDefaultClickLinsener(new DefaultClickLinsener() {
+    //        //            @Override
+    //        //            public void onClick(View view, int position, Object item) {
+    //        //                if (onClick != null) {
+    //        //                    onClick.click(position, (int) mChartKline.getXChartMin(), (int) mChartKline.getXChartMax());
+    //        //                }
+    //        //            }
+    //        //        });
+    //        //        mChartVolume.setDefaultClickLinsener(new DefaultClickLinsener() {
+    //        //            @Override
+    //        //            public void onClick(View view, int position, Object item) {
+    //        //                if (onClick != null) {
+    //        //                    onClick.click(position, (int) mChartVolume.getXChartMin(), (int) mChartVolume.getXChartMax());
+    //        //                }
+    //        //            }
+    //        //        });
+    //        setMarkerView(mData, chartKline);
+    //        setMarkerViewButtom(mData, chartVolume);
+    //        setChartListener();
+    //
+    //
+    //        setHandler(mChartKline);
+    //        setHandler(mChartVolume);
+    //
+    //        mChartKline.notifyDataSetChanged();
+    //        mChartVolume.notifyDataSetChanged();
+    //
+    //        mChartKline.invalidate();
+    //        mChartVolume.invalidate();
+    //
+    //    }
 
 
     public void updata(List<KLineBean> lineBeans) {
@@ -700,7 +700,9 @@ public class BlzKlineDraw {
         axisLeftKline.setValueFormatter(new YAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, YAxis yAxis) {
-                return getFormattedString(BigUIUtil.getinstance().bigPrice(value + ""));
+                return getFormattedString(new BigDecimal(value + "")
+                        .setScale(0, RoundingMode.DOWN)
+                        .toPlainString());
             }
         });
 
@@ -947,29 +949,29 @@ public class BlzKlineDraw {
     float xscale = 0;
 
     public void setHandler(CombinedChart combinedChart) {
-//        final ViewPortHandler viewPortHandlerBar = combinedChart.getViewPortHandler();
-//        //设置最大 缩小x
-//        //viewPortHandlerBar.setMinimumScaleX(MyUtils.culcMaxscale(minXRange));
-//        xscale = UserSet.getinstance().getKlineScale();
-//        float i = 1;
-//        Matrix touchmatrix = viewPortHandlerBar.getMatrixTouch();
-//        if (mData != null) {
-//            if (!ListUtils.isEmpty(mData.getXVals())) {
-//                i = ((float) mData.getXVals().size() / (float) pageSize);
-//            }
-//        }
-//        //mChartKline.getViewPortHandler().setZoom(xscale,1f);
-//        //touchmatrix.postScale(xscale / i, 1f);
-//        touchmatrix.reset();
-//        viewPortHandlerBar.setMaximumScaleX(10 * i);
-//        viewPortHandlerBar.setMinimumScaleX(2 * i);
-//        //viewPortHandlerBar.setZoom(xscale * i, 1f);
-//        //viewPortHandlerBar.getMatrixTouch().reset();
-//        touchmatrix.postScale(xscale * i, 1f);
-//
-//        // viewPortHandlerBar.setZoom(xscale * i, 1f);
-//
-//        //combinedChart.setVisibleXRange(minXRange, maxXRange);
+        //        final ViewPortHandler viewPortHandlerBar = combinedChart.getViewPortHandler();
+        //        //设置最大 缩小x
+        //        //viewPortHandlerBar.setMinimumScaleX(MyUtils.culcMaxscale(minXRange));
+        //        xscale = UserSet.getinstance().getKlineScale();
+        //        float i = 1;
+        //        Matrix touchmatrix = viewPortHandlerBar.getMatrixTouch();
+        //        if (mData != null) {
+        //            if (!ListUtils.isEmpty(mData.getXVals())) {
+        //                i = ((float) mData.getXVals().size() / (float) pageSize);
+        //            }
+        //        }
+        //        //mChartKline.getViewPortHandler().setZoom(xscale,1f);
+        //        //touchmatrix.postScale(xscale / i, 1f);
+        //        touchmatrix.reset();
+        //        viewPortHandlerBar.setMaximumScaleX(10 * i);
+        //        viewPortHandlerBar.setMinimumScaleX(2 * i);
+        //        //viewPortHandlerBar.setZoom(xscale * i, 1f);
+        //        //viewPortHandlerBar.getMatrixTouch().reset();
+        //        touchmatrix.postScale(xscale * i, 1f);
+        //
+        //        // viewPortHandlerBar.setZoom(xscale * i, 1f);
+        //
+        //        //combinedChart.setVisibleXRange(minXRange, maxXRange);
     }
 
     public void cleanData() {
@@ -1010,7 +1012,7 @@ public class BlzKlineDraw {
         MyBottomMarkerView bottomMarkerView;
         bottomMarkerView = new MyBottomMarkerView(mContext, R.layout.mymarkerview);
         MyInfoMarkerView myInfoMarkerView = new MyInfoMarkerView(mContext, R.layout.layout_kline_info, mData);
-        combinedChart.setMarker(leftMarkerView,bottomMarkerView, hMarkerView, mData);
+        combinedChart.setMarker(leftMarkerView, bottomMarkerView, hMarkerView, mData);
 
         combinedChart.setMyInfoMarkerView(myInfoMarkerView);
     }

@@ -15,6 +15,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.netofthing.R;
 import com.netofthing.entity.bean.ThingPmBean;
 import com.netofthing.utils.UserSet;
@@ -100,6 +101,7 @@ public class ComponentesAdapter extends BaseAdapter<ThingPmBean> {
         if (s.getStartScore().doubleValue() != 0) {
             s1 = new BigDecimal(s.getRealTimeScore())
                     .subtract(s.getStartScore())
+                    .multiply(new BigDecimal("100"))
                     .divide(s.getStartScore(), 2, RoundingMode.DOWN)
                     .toPlainString();
         }
@@ -109,8 +111,11 @@ public class ComponentesAdapter extends BaseAdapter<ThingPmBean> {
         );
         tv_rate.setTextColor(CommonUtils.getColor(new BigDecimal(s1).doubleValue() >= 0 ? UserSet.getinstance().getRiseColor() :
                 UserSet.getinstance().getDropColor()));
+        tv_tem.setTextColor(tv_rate.getTextColors());
 
-        iv_type.setRotation(new BigDecimal(s1).floatValue() > 0 ? 0 : 180);
+        iv_type.setImageDrawable(CommonUtils.getDrawable(new BigDecimal(s1).floatValue() >= 0 ?
+                R.drawable.upload : R.drawable.down));
+
 
         tv_name.setText(s.getSparePartName());
 
@@ -169,6 +174,12 @@ public class ComponentesAdapter extends BaseAdapter<ThingPmBean> {
         leftYAxis.setLabelCount(5, true);
         leftYAxis.setTextColor(CommonUtils.getColor(R.color.color_font2));
         leftYAxis.setGridColor(lineColor);
+        leftYAxis.setValueFormatter(new YAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, YAxis yAxis) {
+                return new BigDecimal(value+"").setScale(0,RoundingMode.DOWN).toPlainString()+"℃";
+            }
+        });
         rightYaxis.setGridColor(lineColor);
 
         leftYAxis.setAxisLineColor(lineColor);
@@ -187,8 +198,8 @@ public class ComponentesAdapter extends BaseAdapter<ThingPmBean> {
         List<String> xVals = new ArrayList<>();
 
         for(int i=0;i< s.getHistory().size();i++){
-            for (String key : s.getHistory().get(0).keySet()) {
-                Entry entry = new Entry(s.getHistory().get(0).get(key), entries.size());
+            for (String key : s.getHistory().get(i).keySet()) {
+                Entry entry = new Entry(s.getHistory().get(i).get(key), entries.size());
                 String sTime=key;
                 entry.setData(sTime);
                 entries.add(entry);

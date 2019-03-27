@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.netofthing.R;
 import com.netofthing.entity.bean.ThingBean;
 import com.netofthing.entity.bean.ThingKlineBean;
@@ -130,6 +131,7 @@ public class ProductionLineAdapter extends BaseAdapter<ThingBean> {
             if (new BigDecimal(s.getData().getStartScore()).doubleValue() != 0) {
                 s1 = new BigDecimal(s.getData().getRealTimeScore())
                         .subtract(new BigDecimal(s.getData().getStartScore()))
+                        .multiply(new BigDecimal("100"))
                         .divide(new BigDecimal(s.getData().getStartScore()), 2, RoundingMode.DOWN)
                         .toPlainString();
             }
@@ -138,8 +140,11 @@ public class ProductionLineAdapter extends BaseAdapter<ThingBean> {
             );
             tv_rate.setTextColor(CommonUtils.getColor(new BigDecimal(s1).doubleValue() >= 0 ? UserSet.getinstance().getRiseColor() :
                     UserSet.getinstance().getDropColor()));
+            tv_tem.setTextColor(tv_rate.getTextColors());
 
-            iv_type.setRotation(new BigDecimal(s1).floatValue() > 0 ? 0 : 180);
+            iv_type.setImageDrawable(CommonUtils.getDrawable(new BigDecimal(s1).floatValue() >= 0 ?
+                    R.drawable.upload : R.drawable.down));
+
 
             initLine(lineChart, s.getData());
             initKline(combinedChart, s.getkData());
@@ -151,16 +156,16 @@ public class ProductionLineAdapter extends BaseAdapter<ThingBean> {
                 recycler_view.setVisibility(View.VISIBLE);
                 tv_no.setVisibility(View.GONE);
                 if (recycler_view.getAdapter() == null) {
-                    ProductionPmAdapter productionPmAdapter=new ProductionPmAdapter(mContext,s.getData().getWarningList());
-                    recycler_view.setLayoutManager(new LinearLayoutManager(mContext){
+                    ProductionPmAdapter productionPmAdapter = new ProductionPmAdapter(mContext, s.getData().getWarningList());
+                    recycler_view.setLayoutManager(new LinearLayoutManager(mContext) {
                         @Override
                         public boolean canScrollVertically() {
                             return false;
                         }
                     });
                     recycler_view.setAdapter(productionPmAdapter);
-                }else {
-                    ((ProductionPmAdapter)recycler_view.getAdapter()).setData(s.getData().getWarningList());
+                } else {
+                    ((ProductionPmAdapter) recycler_view.getAdapter()).setData(s.getData().getWarningList());
                 }
             }
         } else {
@@ -223,6 +228,12 @@ public class ProductionLineAdapter extends BaseAdapter<ThingBean> {
         axisLeftKline.setZeroLineColor(border_color);
         axisLeftKline.setGridColor(border_color);
         axisLeftKline.setAxisLineColor(border_color);
+        axisLeftKline.setValueFormatter(new YAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, YAxis yAxis) {
+                return new BigDecimal(value+"").setScale(0,RoundingMode.DOWN).toPlainString()+"℃";
+            }
+        });
         axisLeftKline.setDrawLabels(true);
         //axisLeftKline.enableGridDashedLine(10f, 10f, 0f);
         axisLeftKline.setTextColor(color_font4);
@@ -365,8 +376,8 @@ public class ProductionLineAdapter extends BaseAdapter<ThingBean> {
         List<String> xVals = new ArrayList<>();
 
         for (int i = 0; i < s.getHistory().size(); i++) {
-            for (String key : s.getHistory().get(0).keySet()) {
-                Entry entry = new Entry(s.getHistory().get(0).get(key), entries.size());
+            for (String key : s.getHistory().get(i).keySet()) {
+                Entry entry = new Entry(s.getHistory().get(i).get(key), entries.size());
                 String sTime = key;
                 entry.setData(sTime);
                 entries.add(entry);

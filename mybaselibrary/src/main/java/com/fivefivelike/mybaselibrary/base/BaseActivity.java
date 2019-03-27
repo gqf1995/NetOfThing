@@ -2,7 +2,6 @@ package com.fivefivelike.mybaselibrary.base;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -16,7 +15,6 @@ import com.fivefivelike.mybaselibrary.entity.ToolbarBuilder;
 import com.fivefivelike.mybaselibrary.mvp.presenter.ActivityPresenter;
 import com.fivefivelike.mybaselibrary.utils.ActUtil;
 import com.fivefivelike.mybaselibrary.utils.CleanLeakUtils;
-import com.fivefivelike.mybaselibrary.utils.ToastUtil;
 
 /**
  * Created by 郭青枫 on 2017/7/7.
@@ -103,25 +101,25 @@ public abstract class BaseActivity<T extends BaseDelegate> extends ActivityPrese
         ActUtil.getInstance().removeActivitiyFromStack(this);//将页面从栈中移除
     }
 
-    @Override
-    public void onBackPressed() {
-        if (isDoubleClickExit) {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                ToastUtil.show("再按一次退出程序");
-                exitTime = System.currentTimeMillis();
-            } else {
-                //ActUtil.getInstance().AppExit(this);
-                Intent intent = new Intent();
-                // 为Intent设置Action、Category属性
-                intent.setAction(Intent.ACTION_MAIN);// "android.intent.action.MAIN"
-                intent.addCategory(Intent.CATEGORY_HOME); //"android.intent.category.HOME"
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-            return;
-        }
-        super.onBackPressed();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (isDoubleClickExit) {
+//            if ((System.currentTimeMillis() - exitTime) > 2000) {
+//                ToastUtil.show("再按一次退出程序");
+//                exitTime = System.currentTimeMillis();
+//            } else {
+//                //ActUtil.getInstance().AppExit(this);
+//                Intent intent = new Intent();
+//                // 为Intent设置Action、Category属性
+//                intent.setAction(Intent.ACTION_MAIN);// "android.intent.action.MAIN"
+//                intent.addCategory(Intent.CATEGORY_HOME); //"android.intent.category.HOME"
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+//            }
+//            return;
+//        }
+//        super.onBackPressed();
+//    }
 
     /**
      * 去掉状态栏

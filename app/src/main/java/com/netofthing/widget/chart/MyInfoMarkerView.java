@@ -18,6 +18,7 @@ import com.netofthing.entity.bean.kline.KLineBean;
 import com.netofthing.utils.BigUIUtil;
 import com.netofthing.utils.UserSet;
 
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 
 /**
@@ -89,11 +90,11 @@ public class MyInfoMarkerView extends MarkerView {
         }
         sysmol = mDataParse.getSymbol();
         this.tv_time.setText(TimeUtils.millis2String(kLineBean.timestamp * 1000, new SimpleDateFormat("yyyy-MM-dd HH:mm")) + " " + TimeUtils.getChineseWeek(kLineBean.getTimestamp() * 1000));
-        this.tv_open.setText(BigUIUtil.getinstance().bigPrice(kLineBean.open.toPlainString()) + " " + rateUnit);
-        this.tv_high.setText(BigUIUtil.getinstance().bigPrice(kLineBean.high.toPlainString()) + " " + rateUnit);
-        this.tv_low.setText(BigUIUtil.getinstance().bigPrice(kLineBean.low.toPlainString()) + " " + rateUnit);
-        this.tv_close.setText(BigUIUtil.getinstance().bigPrice(kLineBean.close.toPlainString()) + " " + rateUnit);
-        this.tv_price.setText(BigUIUtil.getinstance().bigPrice(kLineBean.close.toPlainString()) + " " + rateUnit);
+        this.tv_open.setText(kLineBean.open.setScale(0, RoundingMode.DOWN).toPlainString() + " " + rateUnit);
+        this.tv_high.setText(kLineBean.high.setScale(0, RoundingMode.DOWN).toPlainString() + " " + rateUnit);
+        this.tv_low.setText(kLineBean.low.setScale(0, RoundingMode.DOWN).toPlainString() + " " + rateUnit);
+        this.tv_close.setText(kLineBean.close.setScale(0, RoundingMode.DOWN).toPlainString() + " " + rateUnit);
+        this.tv_price.setText(kLineBean.close.setScale(0, RoundingMode.DOWN).toPlainString() + " " + rateUnit);
 
         float v = (kLineBean.close.floatValue() /
                 kLineBean.open.floatValue()) - 1;

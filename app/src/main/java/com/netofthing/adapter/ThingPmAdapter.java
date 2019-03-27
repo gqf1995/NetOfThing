@@ -6,14 +6,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fivefivelike.mybaselibrary.base.BaseAdapter;
-import com.fivefivelike.mybaselibrary.utils.CommonUtils;
 import com.netofthing.R;
 import com.netofthing.entity.bean.ThingPmBean;
-import com.netofthing.utils.UserSet;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -45,15 +41,6 @@ public class ThingPmAdapter extends BaseAdapter<ThingPmBean> {
         tv_num.setText(s.getRealTimeScore());
         //tv_num.setTextColor(Color.parseColor(s.getColor()));
 
-        String s1 = "0";
-        if (s.getStartScore().doubleValue() != 0) {
-            s1 = new BigDecimal(s.getRealTimeScore())
-                    .subtract(s.getStartScore())
-                    .divide(s.getStartScore(), 2, RoundingMode.DOWN)
-                    .toPlainString();
-        }
-        tv_num.setTextColor(CommonUtils.getColor(new BigDecimal(s1).doubleValue() >= 0 ? UserSet.getinstance().getRiseColor() :
-                UserSet.getinstance().getDropColor()));
 
         ViewGroup.LayoutParams layoutParams = lin_root.getLayoutParams();
         layoutParams.height = hight;

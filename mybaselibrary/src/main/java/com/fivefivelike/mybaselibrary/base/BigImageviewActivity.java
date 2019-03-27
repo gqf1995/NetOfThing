@@ -279,10 +279,10 @@ public class BigImageviewActivity extends BaseActivity<BigImageveiwDelegate> {
         finish();
     }
 
-    @Override
-    public void onBackPressed() {
-        onGalleryCancel();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        onGalleryCancel();
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

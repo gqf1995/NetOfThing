@@ -71,6 +71,7 @@ public class MachinesAdapter extends BaseAdapter<WarningListBean> {
         if (s.getStartScore().doubleValue() != 0) {
             s1 = new BigDecimal(s.getRealTimeScore())
                     .subtract(s.getStartScore())
+                    .multiply(new BigDecimal("100"))
                     .divide(s.getStartScore(), 2, RoundingMode.DOWN)
                     .toPlainString();
         }
@@ -79,8 +80,10 @@ public class MachinesAdapter extends BaseAdapter<WarningListBean> {
         );
         tv_rate.setTextColor(CommonUtils.getColor(new BigDecimal(s1).doubleValue() >= 0 ? UserSet.getinstance().getRiseColor() :
                 UserSet.getinstance().getDropColor()));
+        tv_tem.setTextColor(tv_rate.getTextColors());
+        iv_type.setImageDrawable(CommonUtils.getDrawable(new BigDecimal(s1).floatValue() >= 0 ?
+                R.drawable.upload : R.drawable.down));
 
-        iv_type.setRotation(new BigDecimal(s1).floatValue() > 0 ? 0 : 180);
 
         GlideUtils.loadImage(
                 "http://47.101.57.230/img/"+

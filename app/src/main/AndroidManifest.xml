@@ -87,7 +87,7 @@
             android:name=".mvp.activity.ComponentesListActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
+        <activity android:name=".mvp.activity.ShowImgsActivity"/>
     </application>
 
 </manifest>

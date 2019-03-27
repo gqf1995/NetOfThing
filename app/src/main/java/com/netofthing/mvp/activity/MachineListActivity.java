@@ -67,7 +67,7 @@ public class MachineListActivity extends BasePullActivity<BaseActivityPullDelega
             adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    KlineInfoActivity.startAct(viewDelegate.getActivity(),
+                    ShowImgsActivity.startAct(viewDelegate.getActivity(),
                             adapter.getDatas().get(position).getId(),
                             adapter.getDatas().get(position).getDeviceName(),
                             adapter.getDatas().get(position).getEquipmentName()

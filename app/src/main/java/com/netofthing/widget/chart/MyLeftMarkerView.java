@@ -7,7 +7,9 @@ import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.netofthing.R;
-import com.netofthing.utils.BigUIUtil;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Created by loro on 2017/2/8.
@@ -31,13 +33,15 @@ public class MyLeftMarkerView extends MarkerView implements KCombinedChart.MarkV
     public void setData(float num) {
         this.num = num;
         if (markerTv != null) {
-            markerTv.setText(BigUIUtil.getinstance().bigPrice(num + ""));
+            markerTv.setText(new BigDecimal(num + "")
+                    .setScale(0, RoundingMode.DOWN).toPlainString());
         }
     }
 
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
-        markerTv.setText(BigUIUtil.getinstance().bigPrice(num + ""));
+        markerTv.setText(new BigDecimal(num + "")
+                .setScale(0, RoundingMode.DOWN).toPlainString());
     }
 
     @Override

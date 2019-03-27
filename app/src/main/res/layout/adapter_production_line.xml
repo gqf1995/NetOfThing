@@ -87,7 +87,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="95.0"
-                        android:textColor="#373737"
+                        android:textColor="#626564"
                         android:textSize="34px"/>
 
                     <TextView

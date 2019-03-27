@@ -23,6 +23,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.netofthing.R;
 import com.netofthing.adapter.ThingPmAdapter;
 import com.netofthing.entity.bean.ThingKlineBean;
@@ -204,7 +207,7 @@ public class KlineInfoActivity extends BaseDataBindActivity<KlineInfoDelegate, K
         /***XY轴的设置***/
         xAxis = lineChart.getXAxis();
         leftYAxis = lineChart.getAxisLeft();
-        leftYAxis.setEnabled(false);
+        leftYAxis.setEnabled(true);
         rightYaxis = lineChart.getAxisRight();
         //X轴设置显示位置在底部
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -213,8 +216,15 @@ public class KlineInfoActivity extends BaseDataBindActivity<KlineInfoDelegate, K
         rightYaxis.setDrawGridLines(false);
         rightYaxis.setDrawLabels(false);
         leftYAxis.setDrawGridLines(true);
-        leftYAxis.setLabelCount(5, true);
+        leftYAxis.setDrawLabels(true);
+        leftYAxis.setLabelCount(3, true);
         leftYAxis.setTextColor(CommonUtils.getColor(R.color.color_font2));
+        leftYAxis.setValueFormatter(new YAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, YAxis yAxis) {
+                return new BigDecimal(value+"").setScale(0,RoundingMode.DOWN).toPlainString()+"℃";
+            }
+        });
         leftYAxis.setGridColor(lineColor);
         rightYaxis.setGridColor(lineColor);
 
@@ -234,8 +244,8 @@ public class KlineInfoActivity extends BaseDataBindActivity<KlineInfoDelegate, K
         List<String> xVals = new ArrayList<>();
 
         for (int i = 0; i < thingLineBean.getTemperatureHistory().size(); i++) {
-            for (String key : thingLineBean.getTemperatureHistory().get(0).keySet()) {
-                Entry entry = new Entry(thingLineBean.getTemperatureHistory().get(0).get(key), entries.size());
+            for (String key : thingLineBean.getTemperatureHistory().get(i).keySet()) {
+                Entry entry = new Entry(thingLineBean.getTemperatureHistory().get(i).get(key), entries.size());
                 String sTime = key;
                 entry.setData(sTime);
                 entries.add(entry);
@@ -257,7 +267,13 @@ public class KlineInfoActivity extends BaseDataBindActivity<KlineInfoDelegate, K
         LineDataSet lineDataSet = new LineDataSet(entries, "");
         lineDataSet.setColor(CommonUtils.getColor(R.color.increasing_color));
         lineDataSet.setDrawCircles(false);
-        lineDataSet.setDrawValues(false);
+        lineDataSet.setDrawValues(true);
+        lineDataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                return new BigDecimal(value + "").setScale(1, RoundingMode.DOWN).toPlainString();
+            }
+        });
         lineDataSet.setLineWidth(1.5f);
         lineDataSet.setDrawHorizontalHighlightIndicator(false);
         lineDataSet.setHighLightColor(CommonUtils.getColor(R.color.mark_color));
@@ -266,7 +282,7 @@ public class KlineInfoActivity extends BaseDataBindActivity<KlineInfoDelegate, K
 
         //设置曲线值的圆点是实心还是空心
         lineDataSet.setDrawCircleHole(false);
-        lineDataSet.setValueTextSize(10f);
+        lineDataSet.setValueTextSize(7f);
         lineDataSet.setValueTextColor(CommonUtils.getColor(R.color.decreasing_color));
         //设置折线图填充
         lineDataSet.setDrawFilled(false);
@@ -288,8 +304,8 @@ public class KlineInfoActivity extends BaseDataBindActivity<KlineInfoDelegate, K
                 warningList = GsonUtil.getInstance().toList(data, "warningList", ThingPmBean.class);
 
                 GlideUtils.loadImage(
-                        "http://47.101.57.230/img/"+
-                        thingLineBean.getSort()+".jpg", viewDelegate.viewHolder.iv_piv, GlideUtils.getNoCacheRO());
+                        "http://47.101.57.230/img/" +
+                                thingLineBean.getSort() + ".jpg", viewDelegate.viewHolder.iv_piv, GlideUtils.getNoCacheRO());
 
                 String realTimeScore = GsonUtil.getInstance().getValue(data, "realTimeScore");
                 String startScore = GsonUtil.getInstance().getValue(data, "startScore");
@@ -299,12 +315,17 @@ public class KlineInfoActivity extends BaseDataBindActivity<KlineInfoDelegate, K
                 if (new BigDecimal(startScore).doubleValue() != 0) {
                     s1 = new BigDecimal(realTimeScore)
                             .subtract(new BigDecimal(startScore))
+                            .multiply(new BigDecimal("100"))
                             .divide(new BigDecimal(startScore), 2, RoundingMode.DOWN)
                             .toPlainString();
                 }
                 viewDelegate.viewHolder.tv_num2.setText(s1 + "%");
                 viewDelegate.viewHolder.tv_num2.setTextColor(CommonUtils.getColor(new BigDecimal(s1).doubleValue() >= 0 ? UserSet.getinstance().getRiseColor() :
                         UserSet.getinstance().getDropColor()));
+                viewDelegate.viewHolder.tv_num.setTextColor(viewDelegate.viewHolder.tv_num2.getTextColors());
+                viewDelegate.viewHolder.iv_type.setImageDrawable(CommonUtils.getDrawable(new BigDecimal(s1).floatValue() >= 0 ?
+                        R.drawable.upload : R.drawable.down));
+
 
                 ThingPmAdapter adapter = new ThingPmAdapter(viewDelegate.getActivity(),
                         warningList,
@@ -325,7 +346,7 @@ public class KlineInfoActivity extends BaseDataBindActivity<KlineInfoDelegate, K
                 });
                 viewDelegate.viewHolder.recycler_view.setLayoutManager(new LinearLayoutManager(viewDelegate.getActivity()));
                 viewDelegate.viewHolder.recycler_view.setAdapter(adapter);
-                if(!ListUtils.isEmpty(thingLineBean.getTemperatureHistory())){
+                if (!ListUtils.isEmpty(thingLineBean.getTemperatureHistory())) {
                     initLine();
                 }
 
@@ -344,7 +365,7 @@ public class KlineInfoActivity extends BaseDataBindActivity<KlineInfoDelegate, K
                     kLineBean.setTimestamp(TimeUtils.date2Millis(time) / 1000);
                     datas.add(kLineBean);
                 }
-                if(!ListUtils.isEmpty(datas)) {
+                if (!ListUtils.isEmpty(datas)) {
                     initKline();
                 }
                 break;

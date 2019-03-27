@@ -35,7 +35,7 @@ public class ThingListActivity extends BasePullActivity<BaseActivityPullDelegate
     @Override
     protected void bindEvenListener() {
         super.bindEvenListener();
-        initToolbar(new ToolbarBuilder().setTitle("贵州锦丰矿业").setShowBack(false));
+        initToolbar(new ToolbarBuilder().setTitle("中国水泥").setShowBack(false));
         initList(new ArrayList<ThingBean>());
         viewDelegate.viewHolder.swipeRefreshLayout.setRefreshing(true);
         onRefresh();

@@ -15,8 +15,9 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
-import com.netofthing.utils.BigUIUtil;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 /*画蜡烛图、值、高亮*/
@@ -499,7 +500,8 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             float[] tPosition = new float[2];
             if (maxIndex > minIndex) {
                 //画右边
-                String highString = "← " + BigUIUtil.getinstance().bigPrice(minValue+"");// Float.toString(minValue);
+                String highString = "← " + new BigDecimal(minValue+"")
+                        .setScale(0, RoundingMode.DOWN).toPlainString();// Float.toString(minValue);
 
                 //计算显示位置
                 //计算文本宽度
@@ -512,7 +514,8 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                 c.drawText(highString, x + highStringWidth / 2, tPosition[1], mValuePaint);
             } else {
                 //画左边
-                String highString = BigUIUtil.getinstance().bigPrice(minValue+"")//Float.toString(minValue)
+                String highString =  new BigDecimal(minValue+"")
+                        .setScale(0, RoundingMode.DOWN).toPlainString()//Float.toString(minValue)
                         + " →";
 
                 //计算显示位置
@@ -533,7 +536,8 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
             if (maxIndex > minIndex) {
                 //画左边
-                String highString = BigUIUtil.getinstance().bigPrice(maxValue+"")//Float.toString(maxValue)
+                String highString =  new BigDecimal(maxValue+"")
+                        .setScale(0, RoundingMode.DOWN).toPlainString()//Float.toString(maxValue)
                         + " →";
 
                 int highStringWidth = Utils.calcTextWidth(mValuePaint, highString);
@@ -552,7 +556,8 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             } else {
                 //画右边
                 String highString = "← " +
-                        BigUIUtil.getinstance().bigPrice(maxValue+"");// Float.toString(maxValue);
+                        new BigDecimal(maxValue+"")
+                                .setScale(0, RoundingMode.DOWN).toPlainString();// Float.toString(maxValue);
 
                 //计算显示位置
                 int highStringWidth = Utils.calcTextWidth(mValuePaint, highString);
