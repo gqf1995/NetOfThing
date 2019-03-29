@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.WindowManager;
 
 import com.netofthing.R;
+import com.netofthing.utils.UserSet;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         startActivity(new Intent(this, LoginActivity.class));
+        UserSet.getinstance().setRedRise(false);
     }
 
     @Override

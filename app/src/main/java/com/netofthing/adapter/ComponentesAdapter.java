@@ -97,7 +97,7 @@ public class ComponentesAdapter extends BaseAdapter<ThingPmBean> {
 
         tv_tem.setText(s.getRealTimeScore());
         tv_num.setText(s.getStartScore().toPlainString());
-        String s1="0";
+        String s1 = "0";
         if (s.getStartScore().doubleValue() != 0) {
             s1 = new BigDecimal(s.getRealTimeScore())
                     .subtract(s.getStartScore())
@@ -177,7 +177,8 @@ public class ComponentesAdapter extends BaseAdapter<ThingPmBean> {
         leftYAxis.setValueFormatter(new YAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, YAxis yAxis) {
-                return new BigDecimal(value+"").setScale(0,RoundingMode.DOWN).toPlainString()+"℃";
+                return new BigDecimal(value + "").setScale(1, RoundingMode.DOWN)
+                        .toPlainString() + "%";
             }
         });
         rightYaxis.setGridColor(lineColor);
@@ -197,10 +198,10 @@ public class ComponentesAdapter extends BaseAdapter<ThingPmBean> {
         List<Entry> entries = new ArrayList<>();
         List<String> xVals = new ArrayList<>();
 
-        for(int i=0;i< s.getHistory().size();i++){
+        for (int i = 0; i < s.getHistory().size(); i++) {
             for (String key : s.getHistory().get(i).keySet()) {
                 Entry entry = new Entry(s.getHistory().get(i).get(key), entries.size());
-                String sTime=key;
+                String sTime = key;
                 entry.setData(sTime);
                 entries.add(entry);
                 xVals.add(sTime);

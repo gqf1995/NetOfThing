@@ -357,6 +357,13 @@ public class ProductionLineAdapter extends BaseAdapter<ThingBean> {
         leftYAxis.setDrawGridLines(true);
         leftYAxis.setLabelCount(5, true);
         leftYAxis.setTextColor(CommonUtils.getColor(R.color.color_font2));
+        leftYAxis.setValueFormatter(new YAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, YAxis yAxis) {
+                return new BigDecimal(value+"").setScale(1,RoundingMode.DOWN)
+                        .toPlainString()+"%";
+            }
+        });
         leftYAxis.setGridColor(lineColor);
         rightYaxis.setGridColor(lineColor);
 

@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.fivefivelike.mybaselibrary.base.BasePullActivity;
 import com.fivefivelike.mybaselibrary.entity.ToolbarBuilder;
 import com.fivefivelike.mybaselibrary.utils.GsonUtil;
@@ -19,6 +20,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class MachineListActivity extends BasePullActivity<BaseActivityPullDelegate, BaseActivityPullBinder> {
     MachinesAdapter adapter;
@@ -59,7 +67,20 @@ public class MachineListActivity extends BasePullActivity<BaseActivityPullDelega
         initList(new ArrayList<WarningListBean>());
         viewDelegate.viewHolder.swipeRefreshLayout.setRefreshing(true);
         onRefresh();
-    }
+        Disposable subscribe = Observable.interval(60, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .onTerminateDetach()
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        if (ActivityUtils.getTopActivity() != null&&
+                                ActivityUtils.getTopActivity() instanceof MachineListActivity) {
+                            onRefresh();
+                        }
+                    }
+                });
+        addRequest(subscribe);    }
 
     private void initList(List<WarningListBean> data) {
         if (adapter == null) {

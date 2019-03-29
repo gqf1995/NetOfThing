@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.fivefivelike.mybaselibrary.base.BaseDataBindActivity;
 import com.fivefivelike.mybaselibrary.entity.ToolbarBuilder;
@@ -48,6 +49,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class KlineInfoActivity extends BaseDataBindActivity<KlineInfoDelegate, KlineInfoBinder> {
 
@@ -119,7 +127,20 @@ public class KlineInfoActivity extends BaseDataBindActivity<KlineInfoDelegate, K
                 viewDelegate.viewHolder.tv_type.setText("年数据");
             }
         });
-
+        Disposable subscribe = Observable.interval(60, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .onTerminateDetach()
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        if (ActivityUtils.getTopActivity() != null&&
+                                ActivityUtils.getTopActivity() instanceof KlineInfoActivity) {
+                            addRequest(binder.equipment_real_time(type, KlineInfoActivity.this));
+                        }
+                    }
+                });
+        addRequest(subscribe);
     }
 
 
@@ -156,6 +177,7 @@ public class KlineInfoActivity extends BaseDataBindActivity<KlineInfoDelegate, K
         klineDraw.isFullScreen(false);
         klineDraw.setKlineShowType(1);
         handler.sendEmptyMessageDelayed(1, 1000 * 60);
+
     }
 
     private Handler handler = new Handler() {
@@ -192,8 +214,8 @@ public class KlineInfoActivity extends BaseDataBindActivity<KlineInfoDelegate, K
         lineChart.setDoubleTapToZoomEnabled(false);
         lineChart.setMarkerView(new RealLineMarkerView(this));
         //设置XY轴动画效果
-        lineChart.animateY(2500);
-        lineChart.animateX(1500);
+        lineChart.animateY(0);
+        lineChart.animateX(0);
         lineChart.setDescription("");
         //是否显示边界
         lineChart.setDrawBorders(false);

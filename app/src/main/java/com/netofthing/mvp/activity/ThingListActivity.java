@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.fivefivelike.mybaselibrary.base.BasePullActivity;
 import com.fivefivelike.mybaselibrary.entity.ToolbarBuilder;
 import com.fivefivelike.mybaselibrary.utils.GsonUtil;
@@ -17,6 +18,13 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class ThingListActivity extends BasePullActivity<BaseActivityPullDelegate, BaseActivityPullBinder> {
     ProductionLineAdapter adapter;
@@ -39,6 +47,20 @@ public class ThingListActivity extends BasePullActivity<BaseActivityPullDelegate
         initList(new ArrayList<ThingBean>());
         viewDelegate.viewHolder.swipeRefreshLayout.setRefreshing(true);
         onRefresh();
+        Disposable subscribe = Observable.interval(60, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .onTerminateDetach()
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        if (ActivityUtils.getTopActivity() != null&&
+                                ActivityUtils.getTopActivity() instanceof ThingListActivity) {
+                            onRefresh();
+                        }
+                    }
+                });
+        addRequest(subscribe);
     }
 
     private void initList(List<ThingBean> data) {

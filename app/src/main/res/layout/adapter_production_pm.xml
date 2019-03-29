@@ -4,7 +4,9 @@
     android:id="@+id/lin_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10px"
+    android:paddingLeft="10px"
+    android:paddingTop="@dimen/trans_5px"
+    android:paddingBottom="@dimen/trans_5px"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 

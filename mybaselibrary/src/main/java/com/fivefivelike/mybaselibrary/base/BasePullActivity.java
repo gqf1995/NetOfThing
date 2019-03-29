@@ -33,8 +33,10 @@ public abstract class BasePullActivity<T extends BasePullDelegate, D extends IDa
      * @param loadMode 类型
      */
     public void requestData(BasePullDelegate.LoadMode loadMode) {
-        viewDelegate.requestData(loadMode);
-        refreshData();
+        if (viewDelegate != null) {
+            viewDelegate.requestData(loadMode);
+            refreshData();
+        }
     }
 
     /**
@@ -97,7 +99,7 @@ public abstract class BasePullActivity<T extends BasePullDelegate, D extends IDa
     }
 
     public void onStopNet(int requestCode, BaseDataBind.StopNetMode type) {
-        super.onStopNet(requestCode,type);
+        super.onStopNet(requestCode, type);
         onStopLoading();
     }
 
